@@ -45,6 +45,7 @@ export const login = createAction(LOGIN, ({username, password})=>({
 //사가 생성
 const registerSaga = createRequestSaga(REGISTER, authAPI.register);
 const loginSaga = createRequestSaga(LOGIN, authAPI.login);
+
 export function* authSaga(){
     yield takeLatest(REGISTER, registerSaga);
     yield takeLatest(LOGIN, loginSaga);
@@ -67,13 +68,16 @@ const initialState = {
 };
 
 const auth = handleActions({
+
+    //tip: 필드 명 (로그인/회원가입), 필드의 키(이름, 패스워드 등..), 필드의 값을 받아서 한꺼번에 업데이트가능 
     [CHANGE_FILED]: (state, {payload : {form, key, value}}) =>
         produce(state, draft =>{
             draft[form][key] = value;
         }),
+
     [INITIALIZE_FORM]: (state, {payload : form}) => ({ //인증 초기화
         ...state,
-        [form] : initialState[form],
+        [form] : initialState[form], //필드의 초기 값 (initial state) 로 변경
         authError: null,
 
     }),

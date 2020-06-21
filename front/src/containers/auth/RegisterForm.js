@@ -8,6 +8,7 @@ import { withRouter } from 'react-router-dom';
 const RegisterForm = (   ) => {
 
     const dispatch = useDispatch(); 
+    const [error, setError] = useState(null);
 
     const {form, auth, authError, user} = useSelector(({ auth , user})=>({
         form: auth.register,
@@ -32,6 +33,19 @@ const RegisterForm = (   ) => {
     const onSubmit = e => {
         e.preventDefault();
         console.log('onSubmit');
+
+        //빈칸 발리데이션
+        if([username, password, passwordConfirm].includes('')){
+            setError('빈 칸을 모두 입력하세요');
+            return;
+        }
+        //패스워드 확인 발리데이션
+        if(passwordConfirm!== password){
+            setError('비밀번호가 일치하지 않습니다');
+            dispatch(changeField({form:'register', key:'password', value:''}));
+            dispatch(changeField({form:'register', key:'passwordConfirm', value:''}))
+            return;
+        }
         const { username, password, passwordConfirm } = form;
         if(password !== passwordConfirm){
             //TODO : 오류처리
@@ -47,7 +61,7 @@ const RegisterForm = (   ) => {
 
     //컴포넌트가 처음 렌더링 될 때 form을 초기화
     useEffect(()=>{
-        alert(4);
+        
         dispatch(initializeForm('register'));
     },[dispatch])
 
@@ -56,6 +70,14 @@ const RegisterForm = (   ) => {
         if(authError){
             console.log('오류 발생');
             console.log(authError)
+
+            if(authError.response.status === 400){
+                setError('이미 존재하는 계정입니다');
+                return;
+            }else{
+                setError('회원가입 실패');
+                return;
+            }
 
         }
         if(auth){
@@ -80,6 +102,7 @@ const RegisterForm = (   ) => {
             form={form}
             onChange={onChange}
             onSubmit={onSubmit}
+            error={error}
         />
     )
 

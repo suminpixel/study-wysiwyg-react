@@ -9,7 +9,14 @@ const textMap = {
     register: '회원가입'
 };
 
-const AuthForm = ({ type,onSubmit, form, onChange }) => {
+const ErrorMessage = styled.div`
+    color: red;
+    text-align: center;
+    font-size: 0.875em;
+    margin-top: 1rem;
+`
+
+const AuthForm = ({ type,onSubmit, form, onChange , error}) => {
 
     const text = textMap[type];
 
@@ -46,6 +53,7 @@ const AuthForm = ({ type,onSubmit, form, onChange }) => {
                             />
                     )
                 }
+                {error && <ErrorMessage>{error}</ErrorMessage>}
                 <ButtonWithMarginTop cyan fullWidth style={{marginTop: '1rem'}}>
                     {text}
                 </ButtonWithMarginTop>
