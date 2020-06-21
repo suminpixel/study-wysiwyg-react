@@ -6,18 +6,18 @@
 /blog-frontend/.pnp.js
 
 # testing
-/blog-frontend/coverage
+/front/coverage
 
 # production
-/blog-frontend/build
+/front/build
 
 # misc
-/blog-frontend/.DS_Store
-/blog-frontend/.env.local
-/blog-frontend/.env.development.local
-/blog-frontend/.env.test.local
-/blog-frontend/.env.production.local
+/front/.DS_Store
+/front/.env.local
+/front/.env.development.local
+/front/.env.test.local
+/front/.env.production.local
 
-/blog-frontend/npm-debug.log*
-/blog-frontend/yarn-debug.log*
-/blog-frontend/yarn-error.log*
+/front/npm-debug.log*
+/front/yarn-debug.log*
+/front/yarn-error.log*
