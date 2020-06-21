@@ -1,11 +1,14 @@
-import {createAction, handleActions, createActions} from 'redux-actions';
+import {createAction, handleActions} from 'redux-actions';
 import produce from 'immer';
 import createRequestSaga, { createRequestActionTypes } from '../lib/createRequestSaga';
+import * as authAPI from '../lib/api/auth';
+import { takeLatest } from 'redux-saga/effects';
+
 
 const CHANGE_FILED = 'auth/CHANGE_FILED';
 const INITIALIZE_FORM = 'auth/INITIALIZE_FORM';
 
-const [REGISER, REGISER_SUCCESS, REGISER_FAILURE] = createRequestActionTypes(
+const [REGISTER, REGISTER_SUCCESS, REGISTER_FAILURE] = createRequestActionTypes(
     'auth/REGISTER'
 );
 
@@ -13,20 +16,6 @@ const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] = createRequestActionTypes(
     'auth/LOGIN'
 );
 
-//기본값
-const initialState = {
-    register: {
-        username: '',
-        password: '',
-        passwordConfirm:'',
-    },
-    login: {
-        username: '',
-        password: '',
-    },
-    auth: null,
-    authError: null,
-};
 
 
 export const changeField = createAction(
@@ -52,19 +41,35 @@ export const login = createAction(LOGIN, ({username, password})=>({
     password
 }));
 
-const registerSaga = createRequestSaga(REGISER, authAPI.register);
-const loginSaga = createRequestSaga(LOGIN, authAPI.login);
 
 //사가 생성
+const registerSaga = createRequestSaga(REGISTER, authAPI.register);
+const loginSaga = createRequestSaga(LOGIN, authAPI.login);
 export function* authSaga(){
-    yield takeLatest(REGISER, registerSaga);
+    yield takeLatest(REGISTER, registerSaga);
     yield takeLatest(LOGIN, loginSaga);
 }
  
+
+//기본값
+const initialState = {
+    register: {
+        username: '',
+        password: '',
+        passwordConfirm:'',
+    },
+    login: {
+        username: '',
+        password: '',
+    },
+    auth: null,
+    authError: null,
+};
+
 const auth = handleActions({
     [CHANGE_FILED]: (state, {payload : {form, key, value}}) =>
         produce(state, draft =>{
-            draftp[form][key] = value;
+            draft[form][key] = value;
         }),
     [INITIALIZE_FORM]: (state, {payload : form}) => ({ //인증 초기화
         ...state,
@@ -72,13 +77,13 @@ const auth = handleActions({
         authError: null,
 
     }),
-    [REGISER_SUCCESS]: (state, {payload : auth}) => ({
+    [REGISTER_SUCCESS]: (state, {payload : auth}) => ({
         ...state,
         auth, 
         authError: null,
 
     }),
-    [REGISER_FAILURE]: (state, {payload : error}) => ({
+    [REGISTER_FAILURE]: (state, {payload : error}) => ({
         ...state,
 
         authError: error,
