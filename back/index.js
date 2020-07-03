@@ -3,7 +3,7 @@ const koa = require('koa');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const mongoose = require('mongoose');
-
+const jwtMiddleware = require('./src/lib/jwtMiddleware');
 
 const {PORT, MONGO_URI} = process.env;
 
@@ -19,6 +19,7 @@ mongoose
     })
 
 const api = require('./src/api');
+
 const app = new koa();
 const router = new Router();
 
@@ -41,6 +42,7 @@ router.get('/posts', ctx => {
 });
 */
 app.use(bodyParser());
+app.use(jwtMiddleware);
 
 router.use('/api', api.routes());
 router.get('/', ctx => {

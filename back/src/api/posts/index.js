@@ -1,6 +1,6 @@
 const Router = require('koa-router');
-const posts = new Router();
 const postsCtrl = require('./posts.crtl');
+const posts = new Router();
 /*
 //dummy data
 const printInfo = ctx => {
