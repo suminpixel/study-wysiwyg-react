@@ -38,7 +38,9 @@ exports.register = async ctx => {
 
     try{
         const exists = await User.findByUsername(username);
+        //console.log(exists);
         if(exists){
+            
             ctx.status = 409; //tip: 이미 아이디 존재
             return;
 
@@ -48,8 +50,12 @@ exports.register = async ctx => {
 
         await user.setPassword(password);
         await user.save();
-        ctx.body = user.serialize();
+        /*
+        const data = user.toJSON();
+        delete data.hashedPassword;
         
+        */
+        ctx.body = user.serialize();
         const token = user.generateToken();
         ctx.cookies.set('access_token', token,{
             maxAge: 1000 * 60 * 24 * 7,

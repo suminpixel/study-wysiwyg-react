@@ -18,19 +18,28 @@ export default function createRequestSaga(type, request){
     const FAILURE =  `${type}_FAILURE`;  
   
     return function*(action){
-        console.log(`function* `)
-        console.log(action)
+        console.log(`function* `);
+        console.log(action);
+
         yield put(startLoading(type)); //로딩 시작
+
         try{
-            const response = yield call(request, action.payload);
-            yield console.log(`yield call ${request}`)
-            yield console.log(action.payload)
+
+            //1. 회원가입 post 요청
+            const response = yield call(request, action.payload) //post 요청
+            
+            //2 .리턴값 res 가 undefined
+           // yield console.log(res)
+
+            //yield console.log(`yield call ${request}`)
+            //yield console.log(action.payload)
+   
             yield put({
                 type: SUCCESS,
                 payload: response.data,
             });
         }catch(e){
-          
+            yield console.log(e)
             yield put({
                 type: FAILURE,
                 payload: e,

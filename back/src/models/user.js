@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt'); 
-
+const jwt = require('jsonwebtoken');
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
@@ -24,7 +24,7 @@ UserSchema.statics.findByUsername = async function(username){
 }
 
 UserSchema.methods.serialize = function () {
-    const data = this.toJson();
+    const data = this.toJSON();
     delete data.hashedPassword;
     return data;
 }

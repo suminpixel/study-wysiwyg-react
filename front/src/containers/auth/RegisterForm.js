@@ -32,8 +32,8 @@ const RegisterForm = (   ) => {
     //폼 등록 이벤트 핸들러
     const onSubmit = e => {
         e.preventDefault();
-        console.log('onSubmit');
-
+        //console.log('onSubmit');
+        const {username, password, passwordConfirm} = form;
         //빈칸 발리데이션
         if([username, password, passwordConfirm].includes('')){
             setError('빈 칸을 모두 입력하세요');
@@ -46,13 +46,7 @@ const RegisterForm = (   ) => {
             dispatch(changeField({form:'register', key:'passwordConfirm', value:''}))
             return;
         }
-        const { username, password, passwordConfirm } = form;
-        if(password !== passwordConfirm){
-            //TODO : 오류처리
-            alert(5);
-            return;
-            
-        }
+        
         
         dispatch(register({username, password}));
         
@@ -71,7 +65,7 @@ const RegisterForm = (   ) => {
             console.log('오류 발생');
             console.log(authError)
 
-            if(authError.response.status === 400){
+            if(authError.response.status === 409){
                 setError('이미 존재하는 계정입니다');
                 return;
             }else{
