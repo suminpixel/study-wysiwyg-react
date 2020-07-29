@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import palette from '../../lib/styles/palette';
-import Button from '../common/button';
+import Button from '../common/Button';
 import {Link} from 'react-router-dom';
 
 const textMap = {

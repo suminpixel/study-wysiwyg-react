@@ -1,10 +1,10 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
 import palette from '../../lib/styles/palette';
-import { withRouter , Link} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 
-const ButtonStyle = css`
+const StyledButton = styled.button`
     border: none;
     border-radius: 4px;
     font-size: 1rem;
@@ -31,19 +31,20 @@ const ButtonStyle = css`
     `}
 `
 
-const StyledButton = styled.button`
-    ${ButtonStyle}
-`
+const Button = ({ to, history, ...rest}) => {
 
-const LinkButton = styled(Link)`
-    ${ButtonStyle}
-`
-const Button =  props => {
+    const onClick = e => {
+        if(to){
+            history.push(to);
+        }
+        if(rest.onClick){
+            rest.onClick(e);
+        }
+    }
 
-    return props.to ? 
-        <LinkButton {...props} />
-        :
-        <StyledButton {...props} />
+
+
+    return  <StyledButton {...rest} onClick={onClick}/>;
 }
 
-export default Button;
+export default withRouter(Button);
